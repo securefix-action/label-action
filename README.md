@@ -6,9 +6,9 @@ This action is designed to be a reusable, standalone component for creating labe
 
 ## Features
 
-* Enables implementation of the Client/Server Model
-* Requires only `issues:write` permission
-* Easy to use
+- Enables implementation of the Client/Server Model
+- Requires only `issues:write` permission
+- Easy to use
 
 ## Background
 
@@ -27,11 +27,36 @@ That’s why this action was developed.
 ## Example Code
 
 ```yaml
-uses: securefix-action/label-action
-with:
-  prefix: update-branch-
-  description: ${{github.repository}}/${{github.event.number}}
-  repo: server-repository
-  github_app_id: ${{vars.APP_ID}}
-  github_app_private_key: ${{secrets.APP_PRIVATE_KEY}}
+- uses: actions/create-github-app-token@v2
+  id: token
+  with:
+    app-id: ${{ vars.APP_ID }}
+    private-key: ${{ secrets.PRIVATE_KEY }}
+    permission-issues: write
+    owner: ${{ github.repository_owner }}
+    repositories: |
+      server-repository
+- uses: securefix-action/label-action@main
+  with:
+    prefix: update-branch-
+    description: ${{github.repository}}/${{github.event.number}}
+    repository: server-repository
+    github_token: ${{steps.token.outputs.token}}
 ```
+
+## Action's Inputs / Outputs
+
+### Required Inputs
+
+- `prefix`: The prefix for the label name. The actual label name will consist of this prefix plus a random string, resulting in a 50-character name. The random string helps avoid label name collisions.
+
+### Optional Inputs
+
+- `description`: The description of the label. Defaults to an empty string.
+- `delete_label`: Whether to delete the label shortly after creation. Defaults to deleting it after 1 second.
+- `repository`: The repository where the label will be created. Defaults to the current repository.
+- `github_token`: The GitHub Access Token used to create the label. The default is a GitHub Actions token. The permission `issues:write` is required
+
+### Outputs
+
+- `label_name`: The name of the label that was created.

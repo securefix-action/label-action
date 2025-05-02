@@ -1,0 +1,19 @@
+name: Label Action
+description: |
+  Label Action is GitHub Actions to create GitHub Issue labels to trigger GitHub Actions Workflows.
+  This is useful to build a Client / Server Model by GitHub Actions.
+author: Shunsuke Suzuki
+branding:
+  icon: shield
+  color: blue
+inputs:
+  github_token:
+    description: |
+      A GitHub access token to create labels.
+      The permission `issues:write` is required.
+    required: false
+    default: ${{github.token}}
+runs:
+  using: "node20"
+  main: "dist/index.js"
+  post: "dist/index.js"
