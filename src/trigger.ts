@@ -9,7 +9,7 @@ import YAML from "yaml";
 import * as lib from "./lib";
 
 export const run = async (input: lib.Input) => {
-  if (!input.repo) {
+  if (!input.repository) {
     throw new Error("server_repository is not set");
   }
   const artifactPrefix = "secure-action-label--";
@@ -23,19 +23,19 @@ export const triggerWorkflowByLabel = async (
 ) => {
   const octokit = github.getOctokit(input.githubToken);
   core.info(
-    `creating a label ${label} to ${github.context.repo.owner}/${input.repo}`,
+    `creating a label ${label} to ${github.context.repo.owner}/${input.repository}`,
   );
   await octokit.rest.issues.createLabel({
     owner: github.context.repo.owner,
-    repo: input.repo,
+    repo: input.repository,
     name: label,
-    description: `${input.repo}/${process.env.GITHUB_RUN_ID}`,
+    description: `${input.repository}/${process.env.GITHUB_RUN_ID}`,
   });
   await setTimeout(1000);
   core.info(`deleting a label ${label}`);
   await octokit.rest.issues.deleteLabel({
     owner: github.context.repo.owner,
-    repo: input.repo,
+    repo: input.repository,
     name: label,
   });
 };

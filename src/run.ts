@@ -7,8 +7,13 @@ import * as trigger from "./trigger";
 
 export const main = async () => {
   run({
+    prefix: core.getInput("prefix", {
+      required: true,
+    }),
+    description: core.getInput("description"),
+    deleteLabel: core.getInput("delete_label") === "true",
+    repository: core.getInput("repository"),
     githubToken: core.getInput("github_token"),
-    repo: core.getInput("repository"),
   });
 };
 
