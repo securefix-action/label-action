@@ -47,4 +47,4 @@ jobs:
   test:
     uses: ./.github/workflows/wc-test.yaml
     permissions:
-      contents: write
+      issues: write
