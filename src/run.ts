@@ -2,7 +2,6 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import { Buffer } from "buffer";
-import YAML from "yaml";
 import { setTimeout } from "timers/promises";
 import * as core from "@actions/core";
 import * as github from "@actions/github";

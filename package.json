@@ -4,13 +4,8 @@
     "fmt": "prettier --write ."
   },
   "dependencies": {
-    "@actions/artifact": "^2.3.2",
     "@actions/core": "1.11.1",
-    "@actions/github": "^6.0.0",
-    "@octokit/graphql": "^8.1.1",
-    "@octokit/webhooks-types": "^7.6.1",
-    "yaml": "^2.7.0",
-    "zod": "^3.24.2"
+    "@actions/github": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "20.17.32",
