@@ -27,6 +27,7 @@ export const run = async (input: lib.Input) => {
     throw new Error("prefix must be less than 30 characters");
   }
   const label = `${input.prefix}${Array.from({ length: 50 - input.prefix.length }, () => Math.floor(Math.random() * 36).toString(36)).join("")}`;
+  core.setOutput("label_name", label);
   await triggerWorkflowByLabel(input, label);
 };
 
