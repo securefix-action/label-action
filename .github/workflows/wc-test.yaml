@@ -3,11 +3,11 @@ name: Test
 on: workflow_call
 
 jobs:
-  test-1:
+  test:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      issues: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -21,11 +21,5 @@ jobs:
 
       - uses: ./
         with:
-          handler: octokit/rest.js
-          data: |
-            method: rest.issues.addLabels
-            data:
-              owner: ${{github.event.repository.owner.login}}
-              repo: ${{github.event.repository.name}}
-              issue_number: ${{github.event.pull_request.number}}
-              name: test
+          prefix: test-
+          description: ${{github.repository}}/${{github.event.number}}
