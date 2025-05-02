@@ -2,7 +2,6 @@
 
 `label-action` is a GitHub Action that temporarily creates a label to trigger GitHub Actions workflows using the `labels:created` event.
 It can be used to implement a Client/Server Model in GitHub Actions, enhancing security.
-This action is designed to be a reusable, standalone component for creating labels—common logic that can be shared across various Actions built with the Client/Server Model.
 
 ## Features
 
@@ -15,7 +14,7 @@ This action is designed to be a reusable, standalone component for creating labe
 Operations such as generating commits in CI or auto-approving PRs from Renovate require powerful permissions.
 To prevent abuse of such elevated permissions, it is important to adopt a secure architecture.
 By restricting actual changes to a protected workflow (referred to as the **server workflow**), and having other workflows (the **clients**) merely request changes, we can enforce security through a **Client/Server Model**.
-This model allows a client workflow to trigger the server workflow by creating a label.
+By triggering the server workflow via `label:created` event, you can achieve this model.
 Creating a label requires only the `issues:write` permission, which is weaker and less abusable compared to `contents:write` or `pull_requests:write`, thereby maintaining a higher level of security.
 
 Since the Client/Server Model can be applied to many different use cases, it makes sense to create specialized actions for each.
