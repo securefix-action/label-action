@@ -21,9 +21,8 @@ inputs:
     required: false
     default: "true"
   repository:
-    description: The repository where the label will be created.
+    description: The repository name where the label will be created. Please don't specify the repository owner. By default, the repository is the one where the workflow is running.
     required: false
-    default: ${{github.repository}}
   github_token:
     description: |
       The GitHub Access Token used to create the label. The permission `issues:write` is required.

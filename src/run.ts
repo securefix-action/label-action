@@ -22,11 +22,13 @@ export const main = async () => {
 
 export const run = async (input: lib.Input) => {
   if (!input.repository) {
-    throw new Error("server_repository is not set");
+    input.repository = github.context.repo.repo;
   }
-  const artifactPrefix = "secure-action-label--";
-  const artifact = `${artifactPrefix}${Array.from({ length: 29 }, () => Math.floor(Math.random() * 36).toString(36)).join("")}`;
-  await triggerWorkflowByLabel(input, artifact);
+  if (input.prefix.length > 30) {
+    throw new Error("prefix must be less than 30 characters");
+  }
+  const label = `${input.prefix}${Array.from({ length: 50 - input.prefix.length }, () => Math.floor(Math.random() * 36).toString(36)).join("")}`;
+  await triggerWorkflowByLabel(input, label);
 };
 
 export const triggerWorkflowByLabel = async (
@@ -41,13 +43,15 @@ export const triggerWorkflowByLabel = async (
     owner: github.context.repo.owner,
     repo: input.repository,
     name: label,
-    description: `${input.repository}/${process.env.GITHUB_RUN_ID}`,
+    description: input.description,
   });
-  await setTimeout(1000);
-  core.info(`deleting a label ${label}`);
-  await octokit.rest.issues.deleteLabel({
-    owner: github.context.repo.owner,
-    repo: input.repository,
-    name: label,
-  });
+  if (input.deleteLabel) {
+    await setTimeout(1000);
+    core.info(`deleting a label ${label}`);
+    await octokit.rest.issues.deleteLabel({
+      owner: github.context.repo.owner,
+      repo: input.repository,
+      name: label,
+    });
+  }
 };

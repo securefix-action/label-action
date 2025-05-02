@@ -54,7 +54,7 @@ That’s why this action was developed.
 
 - `description`: The description of the label. Defaults to an empty string.
 - `delete_label`: Whether to delete the label shortly after creation. Defaults to deleting it after 1 second.
-- `repository`: The repository where the label will be created. Defaults to the current repository.
+- `repository`: The repository name where the label will be created. Please don't specify the repository owner. By default, the repository is the one where the workflow is running.
 - `github_token`: The GitHub Access Token used to create the label. The default is a GitHub Actions token. The permission `issues:write` is required
 
 ### Outputs
