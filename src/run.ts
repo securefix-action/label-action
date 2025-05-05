@@ -1,11 +1,15 @@
-import fs from "fs";
-import os from "os";
-import path from "path";
-import { Buffer } from "buffer";
 import { setTimeout } from "timers/promises";
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import * as lib from "./lib";
+
+type Input = {
+  prefix: string;
+  description: string;
+  deleteLabel: boolean;
+  repositoryOwner: string;
+  repositoryName: string;
+  githubToken: string;
+};
 
 export const main = async () => {
   run({
@@ -14,15 +18,13 @@ export const main = async () => {
     }),
     description: core.getInput("description"),
     deleteLabel: core.getInput("delete_label") === "true",
-    repository: core.getInput("repository"),
+    repositoryOwner: core.getInput("repository_owner"),
+    repositoryName: core.getInput("repository_name"),
     githubToken: core.getInput("github_token"),
   });
 };
 
-export const run = async (input: lib.Input) => {
-  if (!input.repository) {
-    input.repository = github.context.repo.repo;
-  }
+export const run = async (input: Input) => {
   if (input.prefix.length > 30) {
     throw new Error("prefix must be less than 30 characters");
   }
@@ -31,17 +33,14 @@ export const run = async (input: lib.Input) => {
   await triggerWorkflowByLabel(input, label);
 };
 
-export const triggerWorkflowByLabel = async (
-  input: lib.Input,
-  label: string,
-) => {
+export const triggerWorkflowByLabel = async (input: Input, label: string) => {
   const octokit = github.getOctokit(input.githubToken);
   core.info(
-    `creating a label ${label} to ${github.context.repo.owner}/${input.repository}`,
+    `creating a label ${label} to ${input.repositoryOwner}/${input.repositoryName}`,
   );
   await octokit.rest.issues.createLabel({
-    owner: github.context.repo.owner,
-    repo: input.repository,
+    owner: input.repositoryOwner,
+    repo: input.repositoryName,
     name: label,
     description: input.description,
   });
@@ -49,8 +48,8 @@ export const triggerWorkflowByLabel = async (
     await setTimeout(1000);
     core.info(`deleting a label ${label}`);
     await octokit.rest.issues.deleteLabel({
-      owner: github.context.repo.owner,
-      repo: input.repository,
+      owner: input.repositoryOwner,
+      repo: input.repositoryName,
       name: label,
     });
   }

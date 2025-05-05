@@ -20,9 +20,14 @@ inputs:
     description: Whether to delete the label shortly after creation.
     required: false
     default: "true"
-  repository:
-    description: The repository name where the label will be created. Please don't specify the repository owner. By default, the repository is the one where the workflow is running.
+  repository_owner:
+    description: The repository owner where the label will be created.
     required: false
+    default: ${{github.repository_owner}}
+  repository_name:
+    description: The repository name where the label will be created.
+    required: false
+    default: ${{github.event.repository.name}}
   github_token:
     description: |
       The GitHub Access Token used to create the label. The permission `issues:write` is required.
