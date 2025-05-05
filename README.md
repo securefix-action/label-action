@@ -1,17 +1,17 @@
 # label-action
 
 `label-action` is a GitHub Action that temporarily creates a label to trigger GitHub Actions workflows using the `labels:created` event.
-It can be used to implement [our Client/Server Model](https://github.com/securefix-action/client-server-model-docs) in GitHub Actions, enhancing security.
+It can be used to implement [our Client/Server Model](https://github.com/csm-actions/docs) in GitHub Actions, enhancing security.
 
 ## Features
 
-- Enables implementation of [our Client/Server Model](https://github.com/securefix-action/client-server-model-docs)
+- Enables implementation of [our Client/Server Model](https://github.com/csm-actions/docs)
 - Requires only `issues:write` permission
 - Easy to use
 
 ## Background
 
-[About our Client/Server Model, please see the document](https://github.com/securefix-action/client-server-model-docs).
+[About our Client/Server Model, please see the document](https://github.com/csm-actions/docs).
 Since our Client/Server Model can be applied to many different use cases, it makes sense to create specialized actions for each.
 However, label creation is a common step across all of them.
 Rather than implementing it separately in each action, encapsulating it in a shared, standalone action improves maintainability.
@@ -30,7 +30,7 @@ That’s why we developed this action.
     owner: ${{ github.repository_owner }}
     repositories: |
       server-repository
-- uses: securefix-action/label-action@main
+- uses: csm-actions/label-action@main
   with:
     prefix: update-branch-
     description: ${{github.repository}}/${{github.event.number}}
