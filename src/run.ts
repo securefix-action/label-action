@@ -33,10 +33,7 @@ export const run = async (input: Input) => {
   await triggerWorkflowByLabel(input, label);
 };
 
-export const triggerWorkflowByLabel = async (
-  input: Input,
-  label: string,
-) => {
+export const triggerWorkflowByLabel = async (input: Input, label: string) => {
   const octokit = github.getOctokit(input.githubToken);
   core.info(
     `creating a label ${label} to ${input.repositoryOwner}/${input.repositoryName}`,
